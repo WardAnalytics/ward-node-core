@@ -1,0 +1,35 @@
+{
+  "name": "ward-node-core",
+  "version": "1.0.0",
+  "description": "An internal package that is used on Ward Analytics Typescript based services.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WardAnalytics/ward-node-core.git"
+  },
+  "author": "Gabriel Vieira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WardAnalytics/ward-node-core/issues"
+  },
+  "homepage": "https://github.com/WardAnalytics/ward-node-core#readme",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "bitcoinjs-lib": "^6.1.5",
+    "sqlite3": "^5.1.7",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.22"
+  }
+}
