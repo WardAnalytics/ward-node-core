@@ -1,7 +1,7 @@
-export class TransactionInput {
-    txid: string;
-    vout: number;
-    n: number;
+export class BitcoinTransactionInput {
+  txid: string;
+  vout: number;
+  n: number;
 
   constructor(txid: string, vout: number, n: number) {
     this.txid = txid;
@@ -18,15 +18,19 @@ export class TransactionInput {
   }
 
   static fromJSON(json: any) {
-    const transactionInput = new TransactionInput(json.txid, json.vout, json.n);
+    const transactionInput = new BitcoinTransactionInput(
+      json.txid,
+      json.vout,
+      json.n
+    );
     return transactionInput;
   }
 }
 
-export class TransactionOutput {
-    address: string;
-    value: number;
-    n: number;
+export class BitcoinTransactionOutput {
+  address: string;
+  value: number;
+  n: number;
 
   constructor(address: string, value: number, n: number) {
     this.address = address;
@@ -43,21 +47,31 @@ export class TransactionOutput {
   }
 
   static fromJSON(json: any) {
-    const transactionOutput = new TransactionOutput(json.address, json.value, json.n);
+    const transactionOutput = new BitcoinTransactionOutput(
+      json.address,
+      json.value,
+      json.n
+    );
     return transactionOutput;
   }
 }
 
+export class BitcoinTransaction {
+  txid: string;
+  inputs: BitcoinTransactionInput[];
+  outputs: BitcoinTransactionOutput[];
+  blockNumber: number;
+  blockHash: string;
+  timestamp: number;
 
-export class Transaction {
-    txid: string;
-    inputs: TransactionInput[];
-    outputs: TransactionOutput[];
-    blockNumber: number;
-    blockHash: string;
-    timestamp: number;
-
-  constructor(txid: string, inputs: TransactionInput[], outputs: TransactionOutput[], blockNumber: number, blockHash: string, timestamp: number) {
+  constructor(
+    txid: string,
+    inputs: BitcoinTransactionInput[],
+    outputs: BitcoinTransactionOutput[],
+    blockNumber: number,
+    blockHash: string,
+    timestamp: number
+  ) {
     this.txid = txid;
     this.inputs = inputs;
     this.outputs = outputs;
@@ -78,15 +92,15 @@ export class Transaction {
   }
 
   static fromJSON(json: any) {
-    return new Transaction(
+    return new BitcoinTransaction(
       json.txid,
-      json.inputs.map((input: any) => TransactionInput.fromJSON(input)),
-      json.outputs.map((output: any) => TransactionOutput.fromJSON(output)),
+      json.inputs.map((input: any) => BitcoinTransactionInput.fromJSON(input)),
+      json.outputs.map((output: any) =>
+        BitcoinTransactionOutput.fromJSON(output)
+      ),
       json.blockNumber,
       json.blockHash,
       json.timestamp
     );
   }
 }
-
-

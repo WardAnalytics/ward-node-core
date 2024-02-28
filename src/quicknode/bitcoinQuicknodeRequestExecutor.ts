@@ -1,8 +1,8 @@
 import bitcoin from "bitcoinjs-lib";
 import {
-  Transaction,
-  TransactionInput,
-  TransactionOutput,
+  BitcoinTransaction,
+  BitcoinTransactionInput,
+  BitcoinTransactionOutput,
 } from "../models/bitcoin/transaction";
 import { QuicknodeRequestExecutor } from "./quicknodeRequestExecutor";
 
@@ -45,9 +45,9 @@ class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
           input.hash.toString("hex") ===
           "0000000000000000000000000000000000000000000000000000000000000000"
         ) {
-          return new TransactionInput("coinbase", 0, index);
+          return new BitcoinTransactionInput("coinbase", 0, index);
         }
-        return new TransactionInput(
+        return new BitcoinTransactionInput(
           input.hash.reverse().toString("hex"),
           input.index,
           index
@@ -57,7 +57,7 @@ class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
       const outputs = tx.outs.map((output, index) => {
         try {
           const address = bitcoin.address.fromOutputScript(output.script); // Handle standard transaction types.
-          return new TransactionOutput(address, output.value, index);
+          return new BitcoinTransactionOutput(address, output.value, index);
         } catch (e) {
           const asmScript = bitcoin.script.toASM(output.script);
 
@@ -81,14 +81,14 @@ class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
             }).address; // Handle P2PK transactions. Note that technically a P2PK transaction has no address, but it is common practice for block explorers to display the address inferred from the public key.
 
             if (typeof address === "string") {
-              return new TransactionOutput(address, output.value, index);
+              return new BitcoinTransactionOutput(address, output.value, index);
             }
           }
-          return new TransactionOutput("Unknown", output.value, index); // Handle unknown transaction types.
+          return new BitcoinTransactionOutput("Unknown", output.value, index); // Handle unknown transaction types.
         }
       });
 
-      const validOutputs: TransactionOutput[] = [];
+      const validOutputs: BitcoinTransactionOutput[] = [];
 
       outputs.forEach((output) => {
         if (output !== dataTransaction) {
@@ -96,7 +96,7 @@ class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
         }
       });
 
-      return new Transaction(
+      return new BitcoinTransaction(
         txid,
         inputs,
         validOutputs,
