@@ -8,7 +8,7 @@ import { QuicknodeRequestExecutor } from "./quicknodeRequestExecutor";
 
 const dataTransaction = "nulldata";
 
-class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
+export class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
   async getBlockFromHash(blockHash: string): Promise<string> {
     const response = await this.peformQuicknodeRequest("getblock", [
       blockHash,
