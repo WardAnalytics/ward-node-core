@@ -13,9 +13,9 @@ import {
 const dataTransaction = "nulldata";
 
 export class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
-  isRpc = false;
+  isRpc: boolean = false;
 
-  async getBlockFromHash(blockHash: string): Promise<string> {
+  private async getBlockFromHash(blockHash: string): Promise<string> {
     const response = await this.peformQuicknodeRequest("getblock", [
       blockHash,
       0,
@@ -23,12 +23,12 @@ export class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
     return response;
   }
 
-  async getBlockFromIndex(blockIndex: number): Promise<string> {
+  private async getBlockFromIndex(blockIndex: number): Promise<string> {
     const blockHash = await this.getBlockHash(blockIndex);
     return await this.getBlockFromHash(blockHash);
   }
 
-  async getBlockHash(blockNumber: number): Promise<string> {
+  private async getBlockHash(blockNumber: number): Promise<string> {
     const response = await this.peformQuicknodeRequest("getblockhash", [
       blockNumber,
     ]).catch((error) => {
@@ -39,7 +39,7 @@ export class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
     return response;
   }
 
-  async getTransactionsFromBlock(blockIndex: number) {
+  private async getTransactionsFromBlock(blockIndex: number) {
     const blockHex = await this.getBlockFromIndex(blockIndex);
     const block = bitcoin.Block.fromHex(blockHex);
 

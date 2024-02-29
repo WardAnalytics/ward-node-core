@@ -9,19 +9,19 @@ import {
 } from "./quicknodeRequestExecutor";
 
 export class EthereumQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
-  isRpc = true;
+  isRpc: boolean = true;
 
   private async getBlockFromIndex(blockIndex: number): Promise<any> {
     const blockIndexHex = "0x" + blockIndex.toString(16);
 
-      return await this.peformQuicknodeRequest("eth_getBlockByNumber", [
-        blockIndexHex,
-        true,
-      ]).catch((error) => {
-        if (error instanceof NullResultError) {
-          throw new InexistentBlockError(blockIndex);
-        }
-      });
+    return await this.peformQuicknodeRequest("eth_getBlockByNumber", [
+      blockIndexHex,
+      true,
+    ]).catch((error) => {
+      if (error instanceof NullResultError) {
+        throw new InexistentBlockError(blockIndex);
+      }
+    });
   }
 
   private async getLogsFromBlocks(fromBlock: number, toBlock: number) {
@@ -119,17 +119,14 @@ export class EthereumQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
     fromBlock: number,
     toBlock: number
   ): Promise<EthereumTransaction[]> {
-    const erc20TransactionsPromise = this.getErc20TransfersFromBlocks(
+    const erc20Transactions = await this.getErc20TransfersFromBlocks(
       fromBlock,
       toBlock
     );
-    const ethTransactionsPromise = this.getTransfersFromBlocks(
+    const ethTransactions = await this.getTransfersFromBlocks(
       fromBlock,
       toBlock
     );
-
-    const erc20Transactions = await erc20TransactionsPromise;
-    const ethTransactions = await ethTransactionsPromise;
 
     const timestampPerBlock: { [blockNumber: number]: number } = {};
     ethTransactions.forEach((transaction) => {
