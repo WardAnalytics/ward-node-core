@@ -13,16 +13,15 @@ export class EthereumQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
 
   private async getBlockFromIndex(blockIndex: number): Promise<any> {
     const blockIndexHex = "0x" + blockIndex.toString(16);
-    try {
+
       return await this.peformQuicknodeRequest("eth_getBlockByNumber", [
         blockIndexHex,
         true,
-      ]);
-    } catch (error) {
-      if (error instanceof NullResultError) {
-        throw new InexistentBlockError(blockIndex);
-      }
-    }
+      ]).catch((error) => {
+        if (error instanceof NullResultError) {
+          throw new InexistentBlockError(blockIndex);
+        }
+      });
   }
 
   private async getLogsFromBlocks(fromBlock: number, toBlock: number) {

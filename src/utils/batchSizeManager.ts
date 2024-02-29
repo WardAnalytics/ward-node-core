@@ -1,12 +1,14 @@
 export class BatchSizeManager {
   batchSize: number;
+  maxBatchSize: number;
   requestsBeforeAdjustment: number;
   successfulRequestsSinceAdjustment: number;
   failedRequestsSinceAdjustment: number;
   requestsSinceAdjustment: number;
 
-  constructor(initialBatchSize: number) {
+  constructor(initialBatchSize: number, maxBatchSize: number = 100) {
     this.batchSize = initialBatchSize;
+    this.maxBatchSize = maxBatchSize;
     this.requestsBeforeAdjustment = 20;
     this.successfulRequestsSinceAdjustment = 0;
     this.failedRequestsSinceAdjustment = 0;
@@ -50,7 +52,7 @@ export class BatchSizeManager {
       `Adjusting batch size from ${this.batchSize} to ${newBatchSize}...`
     );
 
-    this.batchSize = newBatchSize;
+    this.batchSize = Math.min(this.maxBatchSize, newBatchSize);
 
     this.successfulRequestsSinceAdjustment = 0;
     this.failedRequestsSinceAdjustment = 0;

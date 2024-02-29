@@ -29,16 +29,13 @@ export class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
   }
 
   async getBlockHash(blockNumber: number): Promise<string> {
-    var response;
-      try {
-        response = await this.peformQuicknodeRequest("getblockhash", [
-          blockNumber,
-        ]);
-      } catch (error) {
-        if (error instanceof NullResultError) {
-          throw new InexistentBlockError(blockNumber);
-        }
+    const response = await this.peformQuicknodeRequest("getblockhash", [
+      blockNumber,
+    ]).catch((error) => {
+      if (error instanceof NullResultError) {
+        throw new InexistentBlockError(blockNumber);
       }
+    });
     return response;
   }
 
