@@ -28,9 +28,7 @@ export abstract class TransactionQueue<T extends Transaction> {
   abstract getMaxBlock(): Promise<number | null>;
 
   async enqueueTransactions(transactions: T[]): Promise<void> {
-    const queueSize = await this.getQueueLength();
-
-    while (queueSize + transactions.length > this.maxQueueLength) {
+    while (await this.getQueueLength() + transactions.length > this.maxQueueLength) {
       console.log(
         `Attempted to enqueue ${transactions.length} transactions, but queue is full. Waiting 1 second...`
       );
