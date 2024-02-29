@@ -33,8 +33,6 @@ export abstract class QuicknodeRequestExecutor {
           this.isRpc
         );
 
-        console.log("Response:", response);
-
         const error = response["error"];
         if (error) {
           throw new Error(error);
