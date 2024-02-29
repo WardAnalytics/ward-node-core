@@ -4,11 +4,17 @@ import {
   BitcoinTransactionInput,
   BitcoinTransactionOutput,
 } from "../models/bitcoin/transaction";
-import { QuicknodeRequestExecutor } from "./quicknodeRequestExecutor";
+import {
+  InexistentBlockError,
+  NullResultError,
+  QuicknodeRequestExecutor,
+} from "./quicknodeRequestExecutor";
 
 const dataTransaction = "nulldata";
 
 export class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
+  isRpc = false;
+
   async getBlockFromHash(blockHash: string): Promise<string> {
     const response = await this.peformQuicknodeRequest("getblock", [
       blockHash,
@@ -23,9 +29,16 @@ export class BitcoinQuicknodeRequestExecutor extends QuicknodeRequestExecutor {
   }
 
   async getBlockHash(blockNumber: number): Promise<string> {
-    const response = await this.peformQuicknodeRequest("getblockhash", [
-      blockNumber,
-    ]);
+    var response;
+      try {
+        response = await this.peformQuicknodeRequest("getblockhash", [
+          blockNumber,
+        ]);
+      } catch (error) {
+        if (error instanceof NullResultError) {
+          throw new InexistentBlockError(blockNumber);
+        }
+      }
     return response;
   }
 

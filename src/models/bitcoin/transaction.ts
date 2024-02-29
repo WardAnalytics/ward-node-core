@@ -1,3 +1,5 @@
+import { Transaction } from "../interfaces/transaction";
+
 export class BitcoinTransactionInput {
   txid: string;
   vout: number;
@@ -56,7 +58,7 @@ export class BitcoinTransactionOutput {
   }
 }
 
-export class BitcoinTransaction {
+export class BitcoinTransaction implements Transaction {
   txid: string;
   inputs: BitcoinTransactionInput[];
   outputs: BitcoinTransactionOutput[];

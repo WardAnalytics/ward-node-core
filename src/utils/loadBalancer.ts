@@ -26,12 +26,25 @@ export class LoadBalancer {
     return axiosInstance;
   }
 
-  async performRequest(method: string, params: (string | number)[]) {
+  async performRequest(method: string, params: any[], isRpc: boolean = false) {
     const axiosInstance = this.getNextAxiosInstance();
-    const response = await axiosInstance.post("/", {
-      method: method,
-      params: params,
-    });
+
+    var body: any;
+    if (isRpc) {
+      body = {
+        jsonrpc: "2.0",
+        id: 1,
+        method: method,
+        params: params,
+      };
+    } else {
+      body = {
+        method: method,
+        params: params,
+      };
+    }
+
+    const response = await axiosInstance.post("/", body);
     return response.data;
   }
 }
