@@ -1,6 +1,6 @@
 {
   "name": "ward-node-core",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "An internal package that is used on Ward Analytics Typescript based services.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -25,8 +25,10 @@
   "dependencies": {
     "axios": "^1.6.7",
     "bitcoinjs-lib": "^6.1.5",
+    "pg-connection-string": "^2.6.4",
     "redis": "^4.6.13",
     "sqlite3": "^5.1.7",
+    "ts-postgres": "^2.0.4",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   },
