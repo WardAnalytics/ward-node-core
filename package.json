@@ -1,6 +1,6 @@
 {
   "name": "ward-node-core",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "An internal package that is used on Ward Analytics Typescript based services.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
