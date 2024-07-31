@@ -23,18 +23,29 @@ export class UploadingRepository {
   async getLatestBlockNumber() {
     const conn = await this.getConn();
 
-    const maxBlock = await conn
-      .query<number>("SELECT MAX(block) FROM blocks")
-      .one();
-    return maxBlock;
+    const maxBlockResult = await conn.query<number>(
+      "SELECT MAX(block) FROM blocks"
+    );
+
+    if (maxBlockResult.rows.length === 0) {
+      return null;
+    }
+
+    return maxBlockResult.rows[0][0];
+
   }
 
   async getOldestBlockNumber(): Promise<number | null> {
     const conn = await this.getConn();
 
-    const minBlock = await conn
-      .query<number>("SELECT MIN(block) FROM blocks")
-      .one();
-    return minBlock;
+    const minBlockResult = await conn.query<number>(
+      "SELECT MIN(block) FROM blocks"
+    );
+
+    if (minBlockResult.rows.length === 0) {
+      return null;
+    }
+
+    return minBlockResult.rows[0][0];
   }
 }
